@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom'
 import { supabase } from './supabase'
 import { useEffect, useState } from 'react'
 import Navbar from './components/Navbar'
@@ -7,37 +7,35 @@ import Libros from './pages/Libros'
 import Listas from './pages/Listas'
 import LoginPage from './pages/LoginPage'
 
-function App() {
-  const [listo, setListo] = useState(false)
+function AuthHandler() {
+  const navigate = useNavigate()
 
   useEffect(() => {
-    supabase.auth.getSession().then(() => {
-      setListo(true)
-    })
+    // Limpia el hash de la URL después del login con Google
+    if (window.location.hash.includes('access_token')) {
+      window.history.replaceState(null, '', '/')
+      navigate('/', { replace: true })
+    }
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(() => {
-      setListo(true)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === 'SIGNED_IN') {
+        if (window.location.hash.includes('access_token')) {
+          window.history.replaceState(null, '', '/')
+          navigate('/', { replace: true })
+        }
+      }
     })
 
     return () => subscription.unsubscribe()
   }, [])
 
-  if (!listo) return (
-    <div style={{
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      height: '100vh',
-      fontFamily: 'Libre Baskerville, serif',
-      color: 'var(--f1)',
-      fontSize: '1.2rem'
-    }}>
-      Cargando LiberaUS...
-    </div>
-  )
+  return null
+}
 
+function App() {
   return (
     <BrowserRouter>
+      <AuthHandler />
       <Navbar />
       <Routes>
         <Route path="/" element={<Inicio />} />
