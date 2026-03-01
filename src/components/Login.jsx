@@ -1,4 +1,8 @@
 import { supabase } from '../supabase'
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+
+
 
 function Login() {
   const loginConGoogle = async () => {
@@ -10,6 +14,14 @@ function Login() {
     })
     if (error) console.log('Error:', error)
   }
+
+const navigate = useNavigate()
+
+useEffect(() => {
+  supabase.auth.getSession().then(({ data: { session } }) => {
+    if (session) navigate('/')
+  })
+}, [])
 
   return (
     <button

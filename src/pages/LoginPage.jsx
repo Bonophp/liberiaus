@@ -15,7 +15,11 @@ function LoginPage() {
   const { error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: 'https://liberiaus.vercel.app'
+      redirectTo: 'https://liberiaus.vercel.app/login',
+      queryParams: {
+        access_type: 'offline',
+        prompt: 'consent',
+      }
     }
   })
   if (error) setMensaje('Error al iniciar con Google')
