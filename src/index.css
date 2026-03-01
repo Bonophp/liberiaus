@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Roboto:wght@300;400;500&display=swap');
+
+:root {
+  --f1: #365953;
+  --f2: #D1CDC4;
+  --f3: #BF793B;
+  --f4: #BF5934;
+  --f5: #73392C;
+  --white: #FDFAF6;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background: var(--white);
+  color: #1e1612;
+}
