@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { useEffect } from 'react'
 import { supabase } from './supabase'
+import { useEffect, useState } from 'react'
 import Navbar from './components/Navbar'
 import Inicio from './pages/Inicio'
 import Libros from './pages/Libros'
@@ -8,13 +8,33 @@ import Listas from './pages/Listas'
 import LoginPage from './pages/LoginPage'
 
 function App() {
+  const [listo, setListo] = useState(false)
+
   useEffect(() => {
-    supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'SIGNED_IN') {
-        window.location.href = '/'
-      }
+    supabase.auth.getSession().then(() => {
+      setListo(true)
     })
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(() => {
+      setListo(true)
+    })
+
+    return () => subscription.unsubscribe()
   }, [])
+
+  if (!listo) return (
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: '100vh',
+      fontFamily: 'Libre Baskerville, serif',
+      color: 'var(--f1)',
+      fontSize: '1.2rem'
+    }}>
+      Cargando LiberaUS...
+    </div>
+  )
 
   return (
     <BrowserRouter>
