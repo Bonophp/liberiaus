@@ -21,6 +21,7 @@ function LoginPage() {
   if (error) setMensaje('Error al iniciar con Google')
 }
 
+
   const loginConEmail = async () => {
     setCargando(true)
     const { error } = await supabase.auth.signInWithPassword({ email, password })
