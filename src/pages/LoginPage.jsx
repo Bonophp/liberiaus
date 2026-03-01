@@ -12,12 +12,14 @@ function LoginPage() {
   const navigate = useNavigate()
 
   const loginConGoogle = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: { redirectTo: 'http://localhost:5173' }
-    })
-    if (error) setMensaje('Error al iniciar con Google')
-  }
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: 'https://liberiaus.vercel.app'
+    }
+  })
+  if (error) setMensaje('Error al iniciar con Google')
+}
 
   const loginConEmail = async () => {
     setCargando(true)
